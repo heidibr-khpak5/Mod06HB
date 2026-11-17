@@ -31,23 +31,29 @@ students: list = []  # a table of student data.
 file_data: str = ''  # Holds json data.
 file = None # This is the actual type of the file handler.
 
+# Define a function to read data file
 # When the program starts, read the file data into table
 # Extract the data from the file
 # Read from the JSON file
-try:
-    file = open(FILE_NAME, "r")
-    students = json.load(file)
-except FileNotFoundError as e:
-    print("Text file must exist before running this script!\n")
-    print("-- Technical Error Message -- ")
-    print(e, e.__doc__, type(e), sep='\n')
-except Exception as e:
-    print("There was a non-specific error!\n")
-    print("-- Technical Error Message -- ")
-    print(e, e.__doc__, type(e), sep='\n')
-finally:
-    if file is not None and file.closed == False:
-        file.close()
+def read_data_from_file():
+    global FILE_NAME
+    global students
+    global file
+    try:
+        file = open(FILE_NAME, "r")
+        students = json.load(file)
+    except FileNotFoundError as e:
+        print("Text file must exist before running this script!\n")
+        print("-- Technical Error Message -- ")
+        print(e, e.__doc__, type(e), sep='\n')
+    except Exception as e:
+        print("There was a non-specific error!\n")
+        print("-- Technical Error Message -- ")
+        print(e, e.__doc__, type(e), sep='\n')
+    finally:
+        if file is not None and file.closed == False:
+            file.close()
+
 
 # Repeat the following tasks
 while True:

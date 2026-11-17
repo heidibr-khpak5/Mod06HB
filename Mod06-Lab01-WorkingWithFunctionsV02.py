@@ -4,6 +4,7 @@
 # ChangeLog: (Who, When, What)
 # RRoot,1.1.2030,Created Script
 # HeidiBreslauer, 11/17/2026. Will do the Lab
+# HeidiBreslauer, 11/17,2026. Final pass on mod06lab1
 # ------------------------------------------------- #
 import json
 
@@ -53,104 +54,124 @@ def read_data_from_file():
     finally:
         if file is not None and file.closed == False:
             file.close()
-            
+
 
 def output_menu():
-    pass
+    global MENU
+    global menu_choice
+
+    print(MENU)
+    menu_choice = input("Enter your choice number: ")
+    print() #adding extra space to make it nice1
+
 
 
 def output_letter_by_gpa():
-    pass
+    global message
+    global students
+
+    # Process the data to create and display a custom message
+
+    print("-" * 50)
+    for student in students:
+        if float(student["GPA"]) >= 4.0:
+            message = " {} {} earned an A with a {:.2f} GPA"
+        elif float(student["GPA"]) >= 3.0:
+            message = " {} {} earned a B with a {:.2f} GPA"
+        elif float(student["GPA"]) >= 2.0:
+            message = " {} {} earned a C with a {:.2f} GPA"
+        elif float(student["GPA"]) >= 1.0:
+            message = " {} {} earned a D with a {:.2f} GPA"
+        else:
+            message = " {} {}'s {:.2f} GPA was not a passing grade"
+
+        print(message.format(student["FirstName"], student["LastName"],
+                             float(student["GPA"])))
+    print("-" * 50)
 
 
 def input_student_data():
-    pass
+    global student_first_name
+    global student_last_name
+    global student_gpa
+    global student
+    global students
+
+    try:
+        # Input the data
+        student_first_name = input("What is the student's first name? ")
+        if not student_first_name.isalpha():
+            raise ValueError("The first name should not contain numbers.")
+
+        student_last_name = input("What is the student's last name? ")
+        if not student_last_name.isalpha():
+            raise ValueError("The last name should not contain numbers.")
+
+        try:  # using a nested try block to capture when an input cannot be changed to a float
+            student_gpa = float(input("What is the student's GPA? "))
+        except ValueError:
+            raise ValueError("GPA must be a numeric value.")
+
+        student = {"FirstName": student_first_name,
+                        "LastName": student_last_name,
+                        "GPA": float(student_gpa)}
+        students.append(student)
+    except ValueError as e:
+        print(e)  # Prints the custom message
+        print("-- Technical Error Message -- ")
+        print(e.__doc__)
+        print(e.__str__())
+    except Exception as e:
+        print("There was a non-specific error!\n")
+        print("-- Technical Error Message -- ")
+        print(e, e.__doc__, type(e), sep='\n')
+
+
 
 
 def write_data_to_file():
-    pass
+    global file
+    global students
 
+    try:
+        file = open(FILE_NAME, "w")
+        json.dump(students, file)
+    except TypeError as e:
+        print("Please check that the data is a valid JSON format\n")
+        print("-- Technical Error Message -- ")
+        print(e, e.__doc__, type(e), sep='\n')
+    except Exception as e:
+        print("-- Technical Error Message -- ")
+        print("Built-In Python error info: ")
+        print(e, e.__doc__, type(e), sep='\n')
+    finally:
+        if file is not None and file.closed == False:
+            file.close()
 
-# End of function definition
+ # End of function definition
 
 #Beginning of Main body of this script
+#Get the data from the file
 read_data_from_file()
 
-# Repeat the following tasks
+# Repeat the following tasksile True:
 while True:
-
-    print(MENU)
-    menu_choice = input("Enter your menu choice number: ")
-    print()  # Adding extra space to make it look nicer.
+    output_menu()
 
     if menu_choice == "1":
-        # Process the data to create and display a custom message
-        print("-"*50)
-        for student in students:
-            if float(student["GPA"]) >= 4.0:
-                message = " {} {} earned an A with a {:.2f} GPA"
-            elif float(student["GPA"]) >= 3.0:
-                message = " {} {} earned a B with a {:.2f} GPA"
-            elif float(student["GPA"]) >= 2.0:
-                message = " {} {} earned a C with a {:.2f} GPA"
-            elif float(student["GPA"]) >= 1.0:
-                message = " {} {} earned a D with a {:.2f} GPA"
-            else:
-                message = " {} {}'s {:.2f} GPA was not a passing grade"
-
-            print(message.format(student["FirstName"], student["LastName"], float(student["GPA"])))
-        print("-"*50)
+        output_letter_by_gpa()
         continue
 
     elif menu_choice == "2":
-        try:
-            # Input the data
-            student_first_name = input("What is the student's first name? ")
-            if not student_first_name.isalpha():
-                raise ValueError("The first name should not contain numbers.")
-
-            student_last_name = input("What is the student's last name? ")
-            if not student_last_name.isalpha():
-                raise ValueError("The last name should not contain numbers.")
-
-            try:  # using a nested try block to capture when an input cannot be changed to a float
-                student_gpa = float(input("What is the student's GPA? "))
-            except ValueError:
-                raise ValueError("GPA must be a numeric value.")
-
-            student_data = {"FirstName": student_first_name,
-                            "LastName": student_last_name,
-                            "GPA": float(student_gpa)}
-            students.append(student_data)
-        except ValueError as e:
-            print(e)  # Prints the custom message
-            print("-- Technical Error Message -- ")
-            print(e.__doc__)
-            print(e.__str__())
-        except Exception as e:
-            print("There was a non-specific error!\n")
-            print("-- Technical Error Message -- ")
-            print(e, e.__doc__, type(e), sep='\n')
+        input_student_data()
         continue
 
     elif menu_choice == "3":
-        try:
-            file = open(FILE_NAME, "w")
-            json.dump(students, file)
-        except TypeError as e:
-            print("Please check that the data is a valid JSON format\n")
-            print("-- Technical Error Message -- ")
-            print(e, e.__doc__, type(e), sep='\n')
-        except Exception as e:
-            print("-- Technical Error Message -- ")
-            print("Built-In Python error info: ")
-            print(e, e.__doc__, type(e), sep='\n')
-        finally:
-            if file is not None and file.closed == False:
-                file.close()
+        write_data_to_file()
         continue
 
     elif menu_choice == "4":
+        print("Good Bye.")
         break  # out of the while loop
 
 

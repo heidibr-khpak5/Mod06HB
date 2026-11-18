@@ -1,5 +1,5 @@
 # ------------------------------------------------- #
-# Title: Lab01 - Working with exception handling
+# Title: Lab02 - Working with exception handling
 # Description: Demonstrates how to use exception handling in your code
 # ChangeLog: (Who, When, What)
 # RRoot,1.1.2030,Created Script
@@ -8,10 +8,10 @@
 import json
 
 # Define the Data Constants
-FILE_NAME: str = 'MyLabData.json'
+FILE_NAME: str = "MyLabData.json"
 
 
-# Define the program's data
+#Define the program's data
 MENU: str = '''
 ---- Student GPAs ------------------------------
   Select from the following menu:  
@@ -30,7 +30,7 @@ menu_choice: str = ''   # Hold the choice made by the user.
 student: dict = {}  # one row of student data.
 students: list = []  # a table of student data.
 file_data: str = ''  # Holds json data.
-file = None # Holds a reference to an opened file.
+#file = None # Holds a reference to an opened file.
 
 
 
@@ -129,10 +129,12 @@ def input_student_data(student_data: list):
         print("There was a non-specific error!\n")
         print("-- Technical Error Message -- ")
         print(e, e.__doc__, type(e), sep='\n')
+    return student_data
 
 def write_data_to_file(file_name: str, student_data: list):
     #global file
     #global students
+    file = None
 
     try:
         file = open(file_name, "w")
@@ -154,10 +156,11 @@ def write_data_to_file(file_name: str, student_data: list):
 
 
 # Beginning of the main body of this script
-students = read_data_from_file(file_name = "FILE_NAME",student_data=students)
+students = read_data_from_file(file_name =FILE_NAME,student_data=students)
 print(students)
 
 # Repeat the following tasks
+
 while True:
 
     menu_choice = output_menu(menu = MENU)
@@ -175,4 +178,5 @@ while True:
         continue
 
     elif menu_choice == "4":
+        print("Good Bye.")
         break  # out of the while loop

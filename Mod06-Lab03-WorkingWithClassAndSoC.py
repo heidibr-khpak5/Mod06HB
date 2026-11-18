@@ -32,30 +32,69 @@ students: list = []  # a table of student data.
 file_data: str = ''  # Holds json data.
 # file = None  # This is the actual type of the file handler.
 
-# When the program starts, read the file data into table
-# Extract the data from the file
-# Read from the JSON file
-def read_data_from_file(file_name: str, student_data: list):
-    # global FILE_NAME
-    # global students
-    # global file
-    file = None
 
-    try:
-        file = open(file_name, "r")
-        student_data = json.load(file)
-    except FileNotFoundError as e:
-        print("Text file must exist before running this script!\n")
-        print("-- Technical Error Message -- ")
-        print(e, e.__doc__, type(e), sep='\n')
-    except Exception as e:
-        print("There was a non-specific error!\n")
-        print("-- Technical Error Message -- ")
-        print(e, e.__doc__, type(e), sep='\n')
-    finally:
-        if file is not None and file.closed == False:
-            file.close()
-    return student_data  # Python is doing something ODD here, comment this out and watch how it changes the call to the function on line 156
+# SoC Processing of functions working with json files
+class FileProcessor
+    """"
+    ChangeLog: 
+        HeidiBreslauer, 11/18/2026, created added def read from file
+    """
+
+    # When the function starts, read the file data into table
+    # Extract the data from the file
+    # Read from the JSON file
+    @staticmethod
+    def read_data_from_file(file_name: str, student_data: list):
+        # global FILE_NAME
+        # global students
+        # global file
+        file = None
+
+        try:
+            file = open(file_name, "r")
+            student_data = json.load(file)
+        except FileNotFoundError as e:
+            IO.output_error_messages("Text file must exist before running this script!",e)
+            #print("Text file must exist before running this script!\n")
+            #print("-- Technical Error Message -- ")
+            #print(e, e.__doc__, type(e), sep='\n')
+        except Exception as e:
+            IO.output_error_messages(("There was a non-specific error!",e)
+            #print("There was a non-specific error!\n")
+            #print("-- Technical Error Message -- ")
+            #rint(e, e.__doc__, type(e), sep='\n')
+        finally:
+            if file is not None and file.closed == False:
+                file.close()
+        return student_data
+
+
+
+class IO:
+    """
+    do IO work
+    need at least one function in class. Why not in class FireProcessor?
+    """
+    @staticmethod
+    def output_error_messages(message: str, error: Exception = None):
+        """this function displays a custom error message to userr
+        ChangeLog: (who, when, what)
+        HeidiBreslauer, 11/18/2026 added this new class
+
+        :return: None
+        """
+        print(message, end="\n\n")
+        if error is not None:
+            print("--Technical Error Message --")
+            print(error, error.__doc__, type(error), sep="\n")
+
+
+
+
+
+
+
+
 
 
 def output_menu(menu: str):

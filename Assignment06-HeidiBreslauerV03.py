@@ -46,7 +46,7 @@ class FileProcessor:
         .
     """
     @staticmethod
-    def read_data_from_file(file_name:str, student_table: list):
+    def read_data_from_file(file_name:str):
         file = None
         """
         Description: read data from json file and
@@ -154,7 +154,7 @@ class IO:
         except Exception as e:
             IO.output_error_messages(e.__str__())
 
-        return menu_choic
+        return menu_choice
 
     @staticmethod
     def input_student_data(student_table: list):
@@ -191,7 +191,7 @@ class IO:
             print("-- Technical Error Message -- ")
             print(e.__doc__)
             print(e.__str__())
-        continue
+        return student_table
 
 
     @staticmethod
@@ -205,7 +205,7 @@ class IO:
         """
         # Process the data to create and display a custom message
         print("-" * 50)
-        for each in student_table:
+        for student in student_table:
             print(f'Student {student["FirstName"]} '
                   f'{student["LastName"]} is enrolled in {student["CourseName"]}')
         print("-" * 50)
@@ -217,10 +217,10 @@ class IO:
 # Beginning the main body of this script
 
 # Read in data
-    students =
+students = FileProcessor.read_data_from_file(file_name=FILE_NAME)
 
 # while running script
-while True
+while True:
 
     # present menu
     IO.output_menu(menu=MENU)
@@ -237,7 +237,7 @@ while True
         continue
 
     elif menu_choice =="3": #write data to file
-        FileProcessor.write_data_to_file(file_name: str, student_data: list)
+        FileProcessor.write_data_to_file(file_name=FILE_NAME, student_table=students)
         continue
 
     elif menu_choice =="4":
